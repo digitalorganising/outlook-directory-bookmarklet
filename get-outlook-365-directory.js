@@ -32,51 +32,46 @@ async function getGraphAccessToken() {
   return AccessToken;
 }
 
-async function* scrollDirectory(graphToken, skip = 0) {
-  const pageSize = 200;
-  const queryParams = new URLSearchParams({
+async function* scrollDirectory(graphToken) {
+  const pageSize = 100;
+  const headers = {
+    authorization: `Bearer ${graphToken}`,
+    "content-type": "application/json",
+    ConsistencyLevel: "eventual",
+  };
+  const initialParams = new URLSearchParams({
+    $count: true,
     $top: pageSize,
-    $skip: skip,
-    $orderBy: "displayName",
-    $filter: "personType/subclass eq 'OrganizationUser'",
+    $orderby: "displayName",
+    $select: "displayName,jobTitle,department,mail",
+    $filter: "jobTitle ne null and accountEnabled eq true",
   });
-  const graphRequest = await fetch(
-    "https://graph.microsoft.com/v1.0/me/people?" + queryParams.toString(),
-    {
-      headers: {
-        authorization: `Bearer ${graphToken}`,
-        "content-type": "application/json",
-        "X-PeopleQuery-QuerySources": "Mailbox,Directory",
-      },
+
+  async function* getPage(url) {
+    const res = await fetch(url, {
+      headers,
       method: "GET",
       credentials: "omit",
+    });
+    const data = await res.json();
+    console.log(
+      `%cFetched %c${data.value.length}%c people`,
+      "color: green",
+      "font-weight: bold",
+      "font-weight: normal"
+    );
+    yield* data.value;
+
+    const nextPage = data["@odata.nextLink"];
+    if (nextPage) {
+      yield* getPage(nextPage);
     }
-  );
-  const graphData = await graphRequest.json();
-  const people = graphData.value;
-  console.log(
-    `%cFetched %c${people.length}%c people, skipped ${skip}`,
-    "color: green",
-    "font-weight: bold",
-    "font-weight: normal"
-  );
-  yield* people;
-  if (graphData["@odata.nextLink"]) {
-    yield* scrollDirectory(graphToken, skip + people.length);
   }
+
+  yield* getPage(
+    `https://graph.microsoft.com/v1.0/users?${initialParams.toString()}`
+  );
 }
-
-const shouldSkip = (graphPerson) => {
-  // Generally indicates not an individual
-  return !graphPerson.surname || !graphPerson.givenName;
-};
-
-const flattenPerson = (graphPerson) => ({
-  email: graphPerson.scoredEmailAddresses[0].address,
-  name: graphPerson.givenName,
-  department: graphPerson.department,
-  jobTitle: graphPerson.jobTitle,
-});
 
 const objectToCsvRow = (row) =>
   Object.values(row)
@@ -104,28 +99,19 @@ async function main() {
   const graphToken = await getGraphAccessToken();
   let n = 0;
 
-  for await (const graphPerson of scrollDirectory(graphToken)) {
-    const person = flattenPerson(graphPerson);
-
-    if (shouldSkip(graphPerson)) {
-      console.log(
-        `%cSkipping ${person.email}`,
-        "color: gray; font-style: italic; font-size: 0.5rem"
-      );
-      continue;
-    }
-
+  for await (const user of scrollDirectory(graphToken)) {
     if (n === 0) {
-      await writableStream.write(Object.keys(person).toString() + "\n");
+      await writableStream.write(Object.keys(user).toString() + "\n");
     }
 
-    await writableStream.write(objectToCsvRow(person));
+    await writableStream.write(objectToCsvRow(user));
     n += 1;
   }
   await writableStream.close();
   console.log(
-    `%cWrote ${n} people to ${fileHandle.name}`,
+    `%cWrote ${n} users to ${fileHandle.name}`,
     "color: green; font-weight: bold"
   );
+  alert(`Wrote ${n} users to ${fileHandle.name}`);
 }
 main();

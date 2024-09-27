@@ -16,6 +16,6 @@ const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
 const updatedIndex = indexTemplate.replace("BOOKMARKLET_TEMPLATE", bookmarklet);
-fs.mkdirSync("./build");
+fs.mkdirSync("./build", { recursive: true });
 fs.writeFileSync("build/index.html", updatedIndex);
 console.log("Wrote updated index.html");
