@@ -12,11 +12,8 @@ const bookmarklet = bookmarkleter(code, {
   jQuery: false,
 });
 
-const index = fs.readFileSync("./index.html", {
+const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
-const updatedIndex = index.replace(
-  /(a href=")(.*)(">)/,
-  "$1" + bookmarklet + "$3"
-);
+const updatedIndex = indexTemplate.replace("BOOKMARKLET_TEMPLATE", bookmarklet);
 fs.writeFileSync("./index.html", updatedIndex);
