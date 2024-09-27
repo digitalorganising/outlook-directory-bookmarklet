@@ -5,12 +5,30 @@
   rel="stylesheet"
 />
 <style>
+  * {
+    font-family: "Lato", sans-serif;
+  }
+
   div.wrapper {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+
+  ol.instructions {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+
+  ol.instructions li {
+    margin-bottom: 10px;
+  }
+
+  ol.instructions li::marker {
+    font-weight: 700;
   }
 
   a.last-updated {
@@ -19,7 +37,6 @@
     left: 14px;
     background-color: rgb(229, 229, 229);
     padding: 6px;
-    font-family: "Lato", sans-serif;
     font-size: 12px;
     border-radius: 3px;
     color: black;
@@ -42,7 +59,6 @@
     padding: 25px;
     font-size: 40px;
     font-weight: 700;
-    font-family: "Lato", sans-serif;
     color: rgb(0, 5, 158);
     text-decoration: none;
   }
@@ -54,6 +70,12 @@
 </style>
 <div class="wrapper">
   <a class="bookmarklet" href="BOOKMARKLET_TEMPLATE"> Get Outlook Directory </a>
+  <ol class="instructions">
+    <li>Drag the link above to your bookmarks bar.</li>
+    <li>Go to <a href="https://outlook.office.com">https://outlook.office.com</a>.</li>
+    <li>Click the bookmark you just created.</li>
+    <li>Choose a place to save the directory. You'll get an alert when the download completes.</li>
+  </ol>
 </div>
 <a class="last-updated" href="https://github.com/jamieparkinson/outlook-directory-bookmarklet">
   Last updated at
