@@ -17,6 +17,6 @@ const readme = fs.readFileSync("./README.md", {
 });
 const updatedReadme = readme.replace(
   /(\[bookmarklet-ref\]:)(.*)/,
-  "$1" + encodeURIComponent(bookmarklet)
+  "$1 javascript:" + encodeURIComponent(bookmarklet.replace(/^javascript:/, ""))
 );
 fs.writeFileSync("./README.md", updatedReadme);
