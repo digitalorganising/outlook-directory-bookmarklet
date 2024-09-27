@@ -11,11 +11,19 @@ const bookmarklet = bookmarkleter(code, {
   transpile: false,
   jQuery: false,
 });
+const now = new Date();
 
 const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
-const updatedIndex = indexTemplate.replace("BOOKMARKLET_TEMPLATE", bookmarklet);
+const updatedIndex = indexTemplate
+  .replace("BOOKMARKLET_TEMPLATE", bookmarklet)
+  .replace("LAST_UPDATED_TEMPLATE", now.toISOString())
+  .replace(
+    "LAST_UPDATED_READABLE_TEMPLATE",
+    now.toLocaleString("en-GB", { timeZone: "Europe/London" })
+  );
+
 fs.mkdirSync("./build", { recursive: true });
 fs.writeFileSync("build/index.html", updatedIndex);
 console.log("Wrote updated index.html");
