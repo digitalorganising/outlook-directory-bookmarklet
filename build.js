@@ -12,14 +12,11 @@ const bookmarklet = bookmarkleter(code, {
   jQuery: false,
 });
 
-const readme = fs.readFileSync("./README.md", {
+const index = fs.readFileSync("./index.html", {
   encoding: "utf-8",
 });
-const updatedReadme = readme.replace(
-  /(\[bookmarklet-ref\]:)(.*)/,
-  "$1javascript:" +
-    encodeURIComponent(bookmarklet.replace(/^javascript:/, ""))
-      .replace(/\(/g, "%28")
-      .replace(/\)/g, "%29")
+const updatedIndex = index.replace(
+  /(a href=")(.*)(">)/,
+  "$1" + bookmarklet + "$3"
 );
-fs.writeFileSync("./README.md", updatedReadme);
+fs.writeFileSync("./index.html", updatedIndex);
