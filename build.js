@@ -16,4 +16,6 @@ const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
 const updatedIndex = indexTemplate.replace("BOOKMARKLET_TEMPLATE", bookmarklet);
-fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/index.html`, updatedIndex);
+fs.mkdirSync("./build");
+fs.writeFileSync("build/index.html", updatedIndex);
+console.log("Wrote updated index.html");
