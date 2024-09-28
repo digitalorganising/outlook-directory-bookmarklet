@@ -53,7 +53,7 @@
 
   span.gh-link {
     font-style: italic;
-    color: gray
+    color: gray;
   }
 
   a.bookmarklet {
@@ -77,15 +77,34 @@
   <a class="bookmarklet" href="BOOKMARKLET_TEMPLATE"> Get Outlook Directory </a>
   <ol class="instructions">
     <li>Drag the link above to your bookmarks bar.</li>
-    <li>Go to <a href="https://outlook.office.com">https://outlook.office.com</a>.</li>
+    <li>
+      Go to <a href="https://outlook.office.com">https://outlook.office.com</a>.
+    </li>
     <li>Click the bookmark you just created.</li>
-    <li>Choose a place to save the directory. You'll get an alert when the download completes.</li>
+    <li>
+      Choose a place to save the directory. You'll get an alert when the
+      download completes.
+    </li>
   </ol>
   <span class="gh-link">
-    View code <a href="https://github.com/jamieparkinson/outlook-directory-bookmarklet">here</a>
+    View code
+    <a href="https://github.com/jamieparkinson/outlook-directory-bookmarklet"
+      >here</a
+    >
   </span>
 </div>
-<a class="last-updated" href="https://github.com/jamieparkinson/outlook-directory-bookmarklet">
-  Last updated 
+<a
+  class="last-updated"
+  href="https://github.com/jamieparkinson/outlook-directory-bookmarklet"
+>
+  Last updated
   <time datetime="LAST_UPDATED_TEMPLATE">LAST_UPDATED_READABLE_TEMPLATE</time>
-</div>
+</a>
+<script>
+  document.querySelector("a.bookmarklet").addEventListener("click", (e) => {
+    e.preventDefault();
+    alert(
+      "You need to drag the link to your bookmarks bar - follow instructions below."
+    );
+  });
+</script>
