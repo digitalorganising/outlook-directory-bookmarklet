@@ -17,10 +17,10 @@ const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
 const updatedIndex = indexTemplate
-  .replace("REPOSITORY_URL", process.env.REPOSITORY_URL || "#")
-  .replace("BOOKMARKLET_TEMPLATE", bookmarklet)
-  .replace("LAST_UPDATED_TEMPLATE", now.toISOString())
-  .replace(
+  .replaceAll("REPOSITORY_URL", process.env.REPOSITORY_URL || "#")
+  .replaceAll("BOOKMARKLET_TEMPLATE", bookmarklet)
+  .replaceAll("LAST_UPDATED_TEMPLATE", now.toISOString())
+  .replaceAll(
     "LAST_UPDATED_READABLE_TEMPLATE",
     now.toLocaleString("en-GB", { timeZone: "Europe/London" })
   );
