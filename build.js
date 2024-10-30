@@ -17,6 +17,7 @@ const indexTemplate = fs.readFileSync("./index-template.html", {
   encoding: "utf-8",
 });
 const updatedIndex = indexTemplate
+  .replace("REPOSITORY_URL", process.env.REPOSITORY_URL || "#")
   .replace("BOOKMARKLET_TEMPLATE", bookmarklet)
   .replace("LAST_UPDATED_TEMPLATE", now.toISOString())
   .replace(

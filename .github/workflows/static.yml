@@ -27,6 +27,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
