@@ -9,8 +9,6 @@ function base64DecToArr(base64String) {
     case 3:
       encodedString += "=";
       break;
-    default:
-      throw createBrowserAuthError(BrowserAuthErrorCodes.invalidBase64String);
   }
   const binString = atob(encodedString);
   return Uint8Array.from(binString, (m) => m.codePointAt(0) || 0);
