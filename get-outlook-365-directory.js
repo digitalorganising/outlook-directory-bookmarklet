@@ -3,7 +3,6 @@ async function getGraphAccessToken() {
     __type: "TokenRequest:#Exchange",
     Resource: "https://graph.microsoft.com/",
   };
-  const canary = await cookieStore.get("X-OWA-CANARY");
 
   console.log("Requesting an access token for Graph...");
   const tokenRequest = await fetch(
@@ -12,7 +11,6 @@ async function getGraphAccessToken() {
       headers: {
         action: "GetAccessTokenforResource",
         "content-type": "application/json; charset=utf-8",
-        "x-owa-canary": canary.value,
         "x-owa-urlpostdata": encodeURIComponent(
           JSON.stringify(exchangePostData)
         ),
